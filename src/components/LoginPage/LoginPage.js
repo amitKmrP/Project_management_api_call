@@ -5,6 +5,7 @@ import {
   Switch,
 } from "react-router-dom";
 import React,{useState} from "react";
+import GoogleLogin from 'react-google-login'
 import "./LoginPage.css";
 import { Box, Input } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react";
@@ -40,7 +41,18 @@ const headers = {
   'Authorization': process.env.GOOGLE_CLIENT_SECRET
 }
 let loginSuccess = false
+// function responseSuccessGoogle  (response) {
+//   Axios({
+//     method: "POST",
+//     url: "http://localhost:8000/users/googlelogin",
+//     data:{tokenId:response.tokenId}
+//   }).then(response => {
+//     console.log(response);
+//   })
+// }
+function responseFailureGoogle  (response) {
 
+}
 export default class LoginPage extends React.Component{
   constructor(){
       super()
@@ -56,12 +68,15 @@ export default class LoginPage extends React.Component{
       this.state = {
           username: "",
           password: "",
+          name: "",
           loggedIn,
           error: "",
           tokenVal
       }
       this.onChange =  this.onChange.bind(this)
       this.formSubmit = this.formSubmit.bind(this)
+      this.signup = this.signup.bind(this)
+      this.responseSuccessGoogle = this.responseSuccessGoogle.bind(this)
   }
 
   onChange(ev){
@@ -69,6 +84,18 @@ export default class LoginPage extends React.Component{
           [ev.target.name]: ev.target.value
       })
   }
+  async responseSuccessGoogle(response){
+    await  Axios({
+      method: "POST",
+      url: "http://localhost:8000/users/googlelogin",
+      data:{tokenId:response.tokenId}
+    }).then(response => {
+      this.setState({
+        loggedIn: true
+
+      })    })
+  }
+
 
   async formSubmit(ev){
       ev.preventDefault()
@@ -94,6 +121,31 @@ export default class LoginPage extends React.Component{
           })
       }
   }
+
+  async signup(ev){
+    
+    ev.preventDefault()
+    const {username, password,name} = this.state
+    console.log(username)
+   const  usrData = {
+    "password":password,
+    "email" : username,
+    "name" : name
+  }
+    try {
+        const resData = await Axios.post("http://localhost:8000/users", usrData, {headers: headers})
+        console.log("====0000000000000=====")
+        console.log(resData)
+
+        this.setState({
+          loggedIn: true
+        })
+    } catch (err) {
+        this.setState({
+            error: err.message
+        })
+    }
+}
 
   render()
   {
@@ -140,7 +192,7 @@ export default class LoginPage extends React.Component{
               </Button>
             </div>
             <div>
-              <Button
+              {/* <Button
                 leftIcon={<FcGoogle />}
                 w="100%"
                 my="5px"
@@ -153,7 +205,25 @@ export default class LoginPage extends React.Component{
                 borderRadius="8px"
               >
                 Signin with Google
-              </Button>
+              </Button> */}
+              <GoogleLogin
+                              leftIcon={<FcGoogle />}
+
+                              w="100%"
+                              my="5px"
+                              pr="60px"
+                              pl="60px"
+                              bg="alphaBlack"
+                              border="solid gray 1px"
+                              size="lg"
+                              fontWeight="light"
+                              borderRadius="8px"
+    clientId="481600708346-ghmkhk0qnapn79mn821laqps90pt1mi4.apps.googleusercontent.com"
+    buttonText="Signin with Google"
+    onSuccess={this.responseSuccessGoogle}
+    onFailure={responseFailureGoogle}
+    cookiePolicy={'single_host_origin'}
+  />
             </div>
             <div>
               <Button
@@ -181,13 +251,18 @@ export default class LoginPage extends React.Component{
           <TabPanel>
             <div>
             <FormControl id="email">
-              <FormLabel>Email address</FormLabel>
-              <Input type="email" />
+            <FormLabel>Email address</FormLabel>
+              <Input type="email" placeholder="username" value={this.state.username} onChange={this.onChange} name="username"  />
+              <FormLabel>Name</FormLabel>
+              <Input type="text" placeholder="name" value={this.state.name} onChange={this.onChange} name="name" />
+              <FormLabel>Password</FormLabel>
+              <Input type="password" placeholder="password" value={this.state.password} onChange={this.onChange} name="password" />
               <FormHelperText>We'll never share your email.</FormHelperText>
             </FormControl>
             </div>
 
             <Button
+              onClick = {this.signup}
               w="100%"
               my="5px"
               pr="60px"
@@ -197,24 +272,19 @@ export default class LoginPage extends React.Component{
               bg="black"
               borderRadius="8px"
             >
-              Next
+              Sign Up
             </Button>
             <div style={{ margin: "5px", color: "gray" }}>or</div>
             <div>
-              <Button
-                leftIcon={<FcGoogle />}
-                w="100%"
-                my="5px"
-                pr="60px"
-                pl="60px"
-                bg="alphaBlack"
-                border="solid gray 1px"
-                size="lg"
-                fontWeight="light"
-                borderRadius="8px"
-              >
-                Signin with Google
-              </Button>
+            <GoogleLogin
+    leftIcon={<FcGoogle />}
+
+    clientId="481600708346-ghmkhk0qnapn79mn821laqps90pt1mi4.apps.googleusercontent.com"
+    buttonText="Signin with Google"
+    onSuccess={this.responseSuccessGoogle}
+    onFailure={responseFailureGoogle}
+    cookiePolicy={'single_host_origin'}
+  />
             </div>
             <div>
               <Button
