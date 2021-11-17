@@ -149,9 +149,12 @@ export default class LoginPage extends React.Component{
 
   render()
   {
+
       if(this.state.loggedIn === true){
+        const inStyle = { width: "1000px"};
           return ( <UserDashBoard  /> );
       }
+      const inStyle = { width: "1000px"};
       return(
             <Box
       className="login-container"
@@ -223,6 +226,7 @@ export default class LoginPage extends React.Component{
     onSuccess={this.responseSuccessGoogle}
     onFailure={responseFailureGoogle}
     cookiePolicy={'single_host_origin'}
+    style={inStyle}
   />
             </div>
             <div>
@@ -283,6 +287,7 @@ export default class LoginPage extends React.Component{
     buttonText="Signin with Google"
     onSuccess={this.responseSuccessGoogle}
     onFailure={responseFailureGoogle}
+
     cookiePolicy={'single_host_origin'}
   />
             </div>
