@@ -27,10 +27,8 @@ import UserDashBoard from "../UserDashBoard/UserDashBoard"
 // eslint-disable-next-line
 import {  FormControl,  FormLabel,  FormErrorMessage,  FormHelperText,} from "@chakra-ui/react";
 const googleOAuth = require('../../utils/googleOAuth');
-
 const Axios = require('axios');
 let name
-
 const data = {
   "password":"Amit*paswan1",
   "email" : "amit123@gmail.com",
@@ -134,9 +132,7 @@ export default class LoginPage extends React.Component{
   }
     try {
         const resData = await Axios.post("http://localhost:8000/users", usrData, {headers: headers})
-        console.log("====0000000000000=====")
         console.log(resData)
-
         this.setState({
           loggedIn: true
         })
