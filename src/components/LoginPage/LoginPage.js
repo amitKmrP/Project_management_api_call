@@ -250,7 +250,7 @@ export default class LoginPage extends React.Component{
 
           <TabPanel>
             <div>
-            <FormControl id="signup">
+            <FormControl id="signupId">
             <FormLabel>Email address</FormLabel>
               <Input type="email" placeholder="username" value={this.state.username} onChange={this.onChange} name="username"  />
               <FormLabel>Name</FormLabel>
