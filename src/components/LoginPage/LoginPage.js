@@ -123,11 +123,10 @@ export default class LoginPage extends React.Component{
   async signup(ev){
     
     ev.preventDefault()
-    const {username, password,name} = this.state
-    console.log(username)
+    const {usernameTwo, passwordTwo,name} = this.state
    const  usrData = {
-    "password":password,
-    "email" : username,
+    "password":passwordTwo,
+    "email" : usernameTwo,
     "name" : name
   }
     try {
@@ -252,11 +251,11 @@ export default class LoginPage extends React.Component{
             <div>
             <FormControl id="signup">
             <FormLabel>Email address</FormLabel>
-              <Input type="email" placeholder="username" value={this.state.username} onChange={this.onChange} name="username"  />
+              <Input type="email" placeholder="username" value={this.state.usernameTwo} onChange={this.onChange} name="usernameTwo"  />
               <FormLabel>Name</FormLabel>
               <Input type="text" placeholder="name" value={this.state.name} onChange={this.onChange} name="name" />
               <FormLabel>Password</FormLabel>
-              <Input type="password" placeholder="password" value={this.state.password} onChange={this.onChange} name="password" />
+              <Input type="password" placeholder="password" value={this.state.passwordTwo} onChange={this.onChange} name="passwordTwo" />
               <FormHelperText>We'll never share your email.</FormHelperText>
             </FormControl>
             </div>
